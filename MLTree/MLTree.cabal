@@ -25,6 +25,7 @@ source-repository head
 
 library
   exposed-modules:
+      Coords
       KMeans
   other-modules:
       Paths_MLTree
@@ -33,6 +34,7 @@ library
   build-depends:
       base >=4.7 && <5
     , cassava
+    , pretty-simple
     , random
     , text
     , utf8-string
@@ -50,6 +52,7 @@ executable MLTree-exe
       MLTree
     , base >=4.7 && <5
     , cassava
+    , pretty-simple
     , random
     , text
     , utf8-string
@@ -68,6 +71,7 @@ test-suite MLTree-test
       MLTree
     , base >=4.7 && <5
     , cassava
+    , pretty-simple
     , random
     , text
     , utf8-string

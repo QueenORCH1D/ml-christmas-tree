@@ -26,6 +26,7 @@ dependencies:
 - vector
 - utf8-string
 - random
+- pretty-simple
 
 library:
   source-dirs: src
