@@ -1,43 +1,26 @@
 module KMeans
-    ( kMeans, vKMeans, someFunc
+    ( kMeans, vKMeans, kClusters, initCts
     ) where
-import Text.Pretty.Simple (pPrint)
-import Data.Csv (decode, HasHeader( NoHeader, HasHeader ))
-import Data.Text (Text)
 import Data.Vector (Vector, singleton)
 import qualified Data.Vector as V (filter, map, snoc, accumulate, replicate, empty, minIndex, maximum, zipWith)
-import Data.ByteString.Lazy.UTF8 (fromString)
 import System.Random
 import Coords
 
-someFunc :: IO ()
-someFunc = do
-  x <- readFile "coords_2021.csv"
-  display (vKMeans 3 <$> (decode HasHeader (fromString x) :: Either String (Vector Coords)))  where
-    display (Left s) = pPrint s
-    display (Right s) = do
-      clusters <- s
-      pPrint clusters
-
 -- Verbose version of the kMeans function. Will output the centroids at every iteration
-vKMeans :: Int -> Vector Coords -> IO [Vector Coords]
-vKMeans k coords = do
-  initCts' <- initCts k coords
-  return (rVKMeans 15 k initCts' coords)
+vKMeans :: Int -> Vector Coords -> Vector Coords -> [Vector Coords]
+vKMeans k initCts' coords = do rVKMeans 17 k initCts' coords
 
 rVKMeans :: Int -> Int -> Vector Coords -> Vector Coords -> [Vector Coords]
 rVKMeans 0 _ cts _ = [cts]
 rVKMeans n k cts coords = cts : (rVKMeans (n-1) k cts' coords) where
   cts' = centroids k (kClusters k coords cts)
 
-kMeans :: Int -> Vector Coords -> IO (Vector Coords)
-kMeans k coords = do
-  initCts' <- initCts k coords
-  return (rKMeans 15 k initCts' coords)
+kMeans :: Int -> Vector Coords -> Vector Coords -> Vector Coords
+kMeans k coords initCts' = rKMeans 17 k initCts' coords
 
 initCts :: Int -> Vector Coords -> IO (Vector Coords)
 initCts k coords = do
-  g <- newStdGen
+  g <- getStdGen
   return (packCoords (take (3*k) (randomRs (-1.0, 1.0) g))) where
     packCoords [] = V.empty
     packCoords (x:y:z:xs) = V.snoc (packCoords xs) (mkCoords x y (((z + 1)/2)*maxZ))

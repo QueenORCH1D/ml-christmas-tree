@@ -27,6 +27,8 @@ dependencies:
 - utf8-string
 - random
 - pretty-simple
+- bytestring
+- unordered-containers
 
 library:
   source-dirs: src
