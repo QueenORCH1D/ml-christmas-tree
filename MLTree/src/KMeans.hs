@@ -8,7 +8,7 @@ import Coords
 
 -- Verbose version of the kMeans function. Will output the centroids at every iteration
 vKMeans :: Int -> Vector Coords -> Vector Coords -> [Vector Coords]
-vKMeans k initCts' coords = do rVKMeans 17 k initCts' coords
+vKMeans k initCts' coords = do rVKMeans (6*k) k initCts' coords
 
 rVKMeans :: Int -> Int -> Vector Coords -> Vector Coords -> [Vector Coords]
 rVKMeans 0 _ cts _ = [cts]
@@ -16,7 +16,7 @@ rVKMeans n k cts coords = cts : (rVKMeans (n-1) k cts' coords) where
   cts' = centroids k (kClusters k coords cts)
 
 kMeans :: Int -> Vector Coords -> Vector Coords -> Vector Coords
-kMeans k coords initCts' = rKMeans 17 k initCts' coords
+kMeans k coords initCts' = rKMeans (6*k) k initCts' coords
 
 initCts :: Int -> Vector Coords -> IO (Vector Coords)
 initCts k coords = do

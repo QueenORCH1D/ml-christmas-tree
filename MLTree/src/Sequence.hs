@@ -6,12 +6,13 @@ module Sequence (
   mkSequence,
   constructHeader,
   bumpFrame,
-  getFrame
+  getFrame,
+  combine
 ) where
 
 import Data.Vector (Vector, indexed, fromList)
 import qualified Data.HashMap.Internal as HM (insert, fromList)
-import qualified Data.Vector as V (cons, concatMap, toList, length)
+import qualified Data.Vector as V (cons, concatMap, toList, length, map, (!), (++), empty)
 import Data.Csv (FromRecord (parseRecord), ToRecord (toRecord), (.!), record, toField, ToField (toField), ToNamedRecord(toNamedRecord), (.=), Header)
 import Data.ByteString.UTF8 (fromString, toString)
 import Data.ByteString (append)
@@ -46,5 +47,9 @@ bumpFrame n (Step frame lights) = Step (frame + n) lights
 
 getFrame :: Step -> Int
 getFrame (Step frame _) = frame
+
+combine :: [Sequence] -> Sequence
+combine [] = V.empty
+combine (seq':seqs) = seq' V.++ (combine (map (V.map (bumpFrame ((getFrame (seq' V.! 0)) + 1))) seqs))
 
 type Colour = (Int, Int, Int)

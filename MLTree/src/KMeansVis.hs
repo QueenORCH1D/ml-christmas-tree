@@ -18,7 +18,3 @@ coloursSeq colouring = mkSequence (concatMap (replicate 8) (map (fst <$>) colour
 
 defColours :: Vector Colour
 defColours = V.snoc (V.snoc (V.snoc (V.snoc (singleton (255, 0, 255)) (0, 255, 255)) (255, 0, 0)) (0, 255, 0)) (0, 0, 255)
-
-combine :: [Sequence] -> Sequence
-combine [] = V.empty
-combine (seq':seqs) = seq' V.++ (combine (map (V.map (bumpFrame ((getFrame (seq' V.! 0)) + 1))) seqs))
