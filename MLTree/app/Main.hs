@@ -24,5 +24,4 @@ someFunc = do
                                     visKMeans 4 <$> eitherCoords <*> initCts4,
                                     visKMeans 5 <$> eitherCoords <*> initCts5])) where
       display (Left s) = pPrint s
-      display (Right s) = do
-        writeFile "kmeans_vis.csv" (toString (encodeByName (constructHeader (s ! 0)) (toList s)))
+      display (Right s) = writeFile "kmeans_vis.csv" (toString (encodeByName (constructHeader (s ! 0)) (toList s)))
