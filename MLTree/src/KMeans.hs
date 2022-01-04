@@ -18,10 +18,8 @@ rVKMeans n k cts coords = cts : (rVKMeans (n-1) k cts' coords) where
 kMeans :: Int -> Vector Coords -> Vector Coords -> Vector Coords
 kMeans k coords initCts' = rKMeans (6*k) k initCts' coords
 
-initCts :: Int -> Vector Coords -> IO (Vector Coords)
-initCts k coords = do
-  g <- getStdGen
-  return (packCoords (take (3*k) (randomRs (-1.0, 1.0) g))) where
+initCts :: StdGen -> Int -> Vector Coords -> Vector Coords
+initCts g k coords = packCoords (take (3*k) (randomRs (-1.0, 1.0) g)) where
     packCoords [] = V.empty
     packCoords (x:y:z:xs) = V.snoc (packCoords xs) (mkCoords x y (((z + 1)/2)*maxZ))
     maxZ = V.maximum (V.map getZ coords)

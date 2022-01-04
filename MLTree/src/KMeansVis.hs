@@ -30,7 +30,7 @@ calcDistFromCent :: Vector (Int, Coords) -> Vector Coords -> Vector (Int, Float)
 calcDistFromCent clusters cts = V.map (\(x, y) -> (x, dist (cts V.! x) y)) clusters
 
 visKMeans :: Int -> Vector Coords -> Vector Coords -> Sequence
-visKMeans k coords initCts' = coloursSeq (zipWith ($) (map (colourCluster k defColours) (map (kClusters k coords) (means))) means) where
+visKMeans k coords initCts' = coloursSeq (zipWith ($) (map (colourCluster k (V.fromList defColours)) (map (kClusters k coords) (means))) means) where
   means = vKMeans k initCts' coords
 
 coloursSeq :: [Vector (Colour, Coords)] -> Sequence

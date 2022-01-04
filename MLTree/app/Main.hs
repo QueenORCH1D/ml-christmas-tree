@@ -2,13 +2,15 @@ module Main where
 
 import KMeans
 import KMeansVis (visKMeans)
-import Data.Csv (decode, encodeByName, HasHeader( NoHeader, HasHeader ))
+import Data.Csv (decode, encodeByNameWith, HasHeader( NoHeader, HasHeader ))
 import Text.Pretty.Simple (pPrint)
 import Data.ByteString.Lazy.UTF8 (fromString, toString)
 import Data.Vector (Vector, toList, (!))
+import System.Random (getStdGen)
 import Sequence
 import Coords
 import System.IO.Unsafe (unsafePerformIO)
+import Constants
 
 main :: IO ()
 main = someFunc
@@ -16,12 +18,11 @@ main = someFunc
 someFunc :: IO ()
 someFunc = do
   x <- readFile "coords_2021.csv"
-  let eitherCoords = (decode HasHeader (fromString x) :: Either String (Vector Coords)) in do
-    initCts3 <- sequence (initCts 3 <$> eitherCoords)
-    initCts4 <- sequence (initCts 4 <$> eitherCoords)
-    initCts5 <- sequence (initCts 5 <$> eitherCoords)
-    display (combine <$> (sequence [visKMeans 3 <$> eitherCoords <*> initCts3,
-                                    visKMeans 4 <$> eitherCoords <*> initCts4,
-                                    visKMeans 5 <$> eitherCoords <*> initCts5])) where
-      display (Left s) = pPrint s
-      display (Right s) = writeFile "kmeans_vis.csv" (toString (encodeByName (constructHeader (s ! 0)) (toList s)))
+  let eitherCoords = (decode HasHeader (fromString x) :: Either String (Vector Coords))
+  g <- getStdGen
+  let initCtss = zipWith (<$>) (initCts g <$> ks) (replicate (length ks) eitherCoords)
+  display (combine <$> (sequence (zipWith (zipFunc eitherCoords) (map visKMeans ks) initCtss)))
+  where
+    display (Left s) = pPrint s
+    display (Right s) = writeFile "kmeans_vis.csv" (toString (encodeByNameWith encodeOptions (constructHeader (s ! 0)) (toList s)))
+    zipFunc eitherCoords x y = x <$> eitherCoords <*> y
