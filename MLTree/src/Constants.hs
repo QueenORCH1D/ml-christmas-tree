@@ -27,7 +27,7 @@ speed = 8
 ks :: [Int]
 ks = [3,5,7]
 
---Changes the options for how data is encoded to a CSV
+--Changes the options for how data is encoded to a CSV (See Data.Csv EncodeOptions)
 encodeOptions :: EncodeOptions
 encodeOptions = defaultEncodeOptions {
   encUseCrLf = False
