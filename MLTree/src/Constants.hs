@@ -25,7 +25,7 @@ speed = 8
 -- The values of K that you want to visualise.
 -- Each element in this list needs to be less than the number of colours given
 ks :: [Int]
-ks = [3,5,7]
+ks = [2, 3, 5, 7]
 
 --Changes the options for how data is encoded to a CSV (See Data.Csv EncodeOptions)
 encodeOptions :: EncodeOptions

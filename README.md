@@ -32,7 +32,7 @@ the closest light as a good enough approximation for this visualisation.
 In the source of this code, there is `Constants.hs` I have laid it out as best
 I can so you don't need intimate knowledge of Haskell to change it (though you
 will need to have `stack` set up on your machine to run the code). By default,
-it will visualise `k = 3`, then `k = 5`, then `k = 7`, with colours as dictated
+it will visualise `k = 2`, then `k = 3`, then `k = 5`, then `k = 7`, with colours as dictated
 by that file, but these can be changed. You can also speed up or slow down the rate
 at which the iterations are displayed. If you don't have `stack` installed on your
 machine, this comes preloaded with a `kmeans_vis.csv` that uses the default parameters
