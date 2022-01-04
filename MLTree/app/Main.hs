@@ -12,11 +12,11 @@ import Coords
 import System.IO.Unsafe (unsafePerformIO)
 import Constants
 
+-- Takes coordinates from coords.csv, generates a visualisation for k-means
+-- clustering on those coordinates with parameters taken from Constants.hs,
+-- then outputs that to kmeans_vis.csv
 main :: IO ()
-main = someFunc
-
-someFunc :: IO ()
-someFunc = do
+main = do
   x <- readFile "coords_2021.csv"
   let eitherCoords = (decode HasHeader (fromString x) :: Either String (Vector Coords))
   g <- getStdGen
