@@ -66,7 +66,7 @@ getFrame (Step frame _) = frame
 -- one after the other.
 combine :: [Sequence] -> Sequence
 combine [] = V.empty
-combine (seq':seqs) = seq' V.++ (combine (map (V.map (bumpFrame ((getFrame (seq' V.! 0)) + 1))) seqs))
+combine (seq':seqs) = seq' V.++ (combine (map ((<$>) (bumpFrame ((getFrame (seq' V.! ((length seq') - 1))) + 1))) seqs))
 
 -- Type alias for storing colours in RGB format.
 type Colour = (Int, Int, Int)
