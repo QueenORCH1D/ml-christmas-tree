@@ -65,8 +65,9 @@ getFrame (Step frame _) = frame
 -- of the sequences so that there's no duplicate frame IDs and the sequences play
 -- one after the other.
 combine :: [Sequence] -> Sequence
-combine [] = V.empty
-combine (seq':seqs) = seq' V.++ (combine (map ((<$>) (bumpFrame ((getFrame (seq' V.! ((length seq') - 1))) + 1))) seqs))
+combine [seq'] = seq'
+combine (seq':seqs) = seq' V.++ (combine ((shunt (head seqs)) : (tail seqs))) where
+  shunt = (<$>) (bumpFrame (getFrame (seq' V.! ((length seq') -1)) + 1))
 
 -- Type alias for storing colours in RGB format.
 type Colour = (Int, Int, Int)
